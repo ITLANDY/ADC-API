@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Name="fabric:/ADC" xmlns="http://schemas.microsoft.com/2011/01/fabric">
+  <Parameters>
+    <Parameter Name="ADC.Stateful.OnlineForm_PartitionCount" Value="1" />
+    <Parameter Name="ADC.Stateful.OnlineForm_MinReplicaSetSize" Value="1" />
+    <Parameter Name="ADC.Stateful.OnlineForm_TargetReplicaSetSize" Value="1" />
+    <Parameter Name="ADC.Stateless.DBServiceAPI_ASPNETCORE_ENVIRONMENT" Value="Development" />
+    <Parameter Name="ADC.Stateless.DBServiceAPI_InstanceCount" Value="1" />
+    <Parameter Name="ADC.Stateful.DBService_ASPNETCORE_ENVIRONMENT" Value="Development" />
+    <Parameter Name="ADC.Stateful.DBService_PartitionCount" Value="1" />
+    <Parameter Name="ADC.Stateful.DBService_MinReplicaSetSize" Value="1" />
+    <Parameter Name="ADC.Stateful.DBService_TargetReplicaSetSize" Value="1" />
+    <Parameter Name="ADC.Stateless.API_InstanceCount" Value="1" />
+    <Parameter Name="ADC.Stateful.AAR_PartitionCount" Value="1" />
+    <Parameter Name="ADC.Stateful.AAR_MinReplicaSetSize" Value="1" />
+    <Parameter Name="ADC.Stateful.AAR_TargetReplicaSetSize" Value="1" />
+  </Parameters>
+</Application>

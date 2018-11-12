@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="ADCType" ApplicationTypeVersion="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
+  <Parameters>
+    <Parameter Name="ADC.Stateless.DBServiceAPI_ASPNETCORE_ENVIRONMENT" DefaultValue="" />
+    <Parameter Name="ADC.Stateless.DBServiceAPI_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="ADC.Stateful.DBService_ASPNETCORE_ENVIRONMENT" DefaultValue="" />
+    <Parameter Name="ADC.Stateful.DBService_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="ADC.Stateful.DBService_PartitionCount" DefaultValue="1" />
+    <Parameter Name="ADC.Stateful.DBService_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="ADC.Stateful.OnlineForm_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="ADC.Stateful.OnlineForm_PartitionCount" DefaultValue="1" />
+    <Parameter Name="ADC.Stateful.OnlineForm_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="ADC.Stateless.API_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="ADC.Stateful.AAR_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="ADC.Stateful.AAR_PartitionCount" DefaultValue="1" />
+    <Parameter Name="ADC.Stateful.AAR_TargetReplicaSetSize" DefaultValue="3" />
+  </Parameters>
+  <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
+       should match the Name and Version attributes of the ServiceManifest element defined in the 
+       ServiceManifest.xml file. -->
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="ADC.Stateful.OnlineFormPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="ADC.Stateless.DBServiceAPIPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+    <EnvironmentOverrides CodePackageRef="code">
+      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="[ADC.Stateless.DBServiceAPI_ASPNETCORE_ENVIRONMENT]" />
+    </EnvironmentOverrides>
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="ADC.Stateful.DBServicePkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+    <EnvironmentOverrides CodePackageRef="code">
+      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="[ADC.Stateful.DBService_ASPNETCORE_ENVIRONMENT]" />
+    </EnvironmentOverrides>
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="ADC.Stateless.APIPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="ADC.Stateful.AARPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+  </ServiceManifestImport>
+  <DefaultServices>
+    <!-- The section below creates instances of service types, when an instance of this 
+         application type is created. You can also create one or more instances of service type using the 
+         ServiceFabric PowerShell module.
+         
+         The attribute ServiceTypeName below must match the name defined in the imported ServiceManifest.xml file. -->
+    <Service Name="ADC.Stateful.OnlineForm" ServicePackageActivationMode="ExclusiveProcess">
+      <StatefulService ServiceTypeName="ADC.Stateful.OnlineFormType" TargetReplicaSetSize="[ADC.Stateful.OnlineForm_TargetReplicaSetSize]" MinReplicaSetSize="[ADC.Stateful.OnlineForm_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[ADC.Stateful.OnlineForm_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="ADC.Stateless.DBServiceAPI" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="ADC.Stateless.DBServiceAPIType" InstanceCount="[ADC.Stateless.DBServiceAPI_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+    <Service Name="ADC.Stateful.DBService" ServicePackageActivationMode="ExclusiveProcess">
+      <StatefulService ServiceTypeName="ADC.Stateful.DBServiceType" TargetReplicaSetSize="[ADC.Stateful.DBService_TargetReplicaSetSize]" MinReplicaSetSize="[ADC.Stateful.DBService_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[ADC.Stateful.DBService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="ADC.Stateless.API" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="ADC.Stateless.APIType" InstanceCount="[ADC.Stateless.API_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+    <Service Name="ADC.Stateful.AAR" ServicePackageActivationMode="ExclusiveProcess">
+      <StatefulService ServiceTypeName="ADC.Stateful.AARType" TargetReplicaSetSize="[ADC.Stateful.AAR_TargetReplicaSetSize]" MinReplicaSetSize="[ADC.Stateful.AAR_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[ADC.Stateful.AAR_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+  </DefaultServices>
+</ApplicationManifest>
